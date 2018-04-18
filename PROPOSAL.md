@@ -2,10 +2,14 @@
 Project proposal for final project of Satwik Singh
 
 # Project Type:
-#### OpenFrameworks Project
-Haven't decided yet, want to do something with Machine learning or Computer Vision, might use MLPacks, or OpenCV. Want to build a classifier, that detects objects using Camera input, something to do with object detection and recognition.
+#### Game Arcade Simulator
+Has multiple games that a player can choose to play, stores high scores of all the games and displays player stats. supports multiple players.
 
-# Links:
-* http://mlpack.org/
-* https://opencv.org/
-* http://libccv.org/
+# Games:
+* Pacman
+* Snake
+* Tetris
+* Galaga
+
+# Libraries:
+* [OpenGL](http://openframeworks.cc/documentation/gl/)
