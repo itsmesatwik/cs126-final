@@ -9,7 +9,6 @@ Has multiple games that a player can choose to play, stores high scores of all t
 * Pacman
 * Snake
 * Tetris
-* Galaga
 
 # Libraries:
 * [OpenGL](http://openframeworks.cc/documentation/gl/)
