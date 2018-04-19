@@ -2,13 +2,7 @@
 Project proposal for final project of Satwik Singh
 
 # Project Type:
-#### Game Arcade Simulator
-Has multiple games that a player can choose to play, stores high scores of all the games and displays player stats. supports multiple players.
-
-# Games:
-* Pacman
-* Snake
-* Tetris
-
+#### Flappy Bird
+Same mechanics as flappy bird. Press space to go up. Stay up and dodge the poles. Might add options for different skins and coins, high scores.
 # Libraries:
 * [OpenGL](http://openframeworks.cc/documentation/gl/)
