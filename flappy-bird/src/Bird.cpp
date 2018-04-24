@@ -1,11 +1,11 @@
 #include "Bird.h"
-const float Bird::size_ratio_ = 10;
+const double Bird::size_ratio_ = 0.1;
 
 Bird::Bird() {
 	int width = ofGetWindowWidth();
 	int height = ofGetWindowHeight();
 	screen_dim_.set(width, height);
-	float bird_height_ = size_ratio_*height;
+	double bird_height_ = size_ratio_*height;
 	bird_size_.set(bird_height_,bird_height_);
 	current_direction_ = DOWN;
 	bird_icon_.load("../data/default_bird_logo.png");
@@ -25,6 +25,10 @@ void Bird::update() {
 	}
 }
 
+ofVec2f Bird::getBirdSize() const {
+    return bird_size_;
+}
+
 bool Bird::isDead(Pillar screen_pillar_) const {
 	if (bird_size_.y > ofGetWindowHeight())
 		return true;
@@ -32,4 +36,16 @@ bool Bird::isDead(Pillar screen_pillar_) const {
 	if (screen_pillar_.getRect().intersects(bird_rect_))
         return true;
     return false;
+}
+
+BirdDirection Bird::getDirection() const {
+    return current_direction_;
+}
+
+void Bird::setDirection(BirdDirection newDirection) {
+    current_direction_ = newDirection;
+}
+
+void Bird::resize(int w, int h) {
+    
 }
