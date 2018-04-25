@@ -1,20 +1,28 @@
 #include "ofApp.h"
 #include <iostream>
 
-
-//--------------------------------------------------------------
 void ofApp::setup(){
     ofSetWindowTitle("Flappy Bird");
     srand(static_cast<unsigned>(time(0)));
 }
 
-//--------------------------------------------------------------
+
 void ofApp::update(){
     if (game_state_ == RUNNING) {
         birdy_.update();
         game_pillar_.update();
         
-        if (birdy_.isDead()) {
+        // Checking if the bird has passed the pillar
+        ofVec2f bird_pos = birdy_.getBirdPos();
+        int bird_y = bird_pos.y;
+        ofVec2f pillar_pos = game_pillar_.getPillarPos();
+        int pillar_y = pillar_pos.y;
+        if (bird_y > pillar_y) {
+            pillars_cleared_++;
+        }
+        
+        
+        if (birdy_.isDead(game_pillar_)) {
             game_state_ = FINISHED;
             scores_.push_back(pillars_cleared_);
         }
@@ -38,29 +46,17 @@ void ofApp::draw(){
         drawScore();
     }
     drawPillar();
-    drawBird();
+    //drawBird();
 }
 
-/*
- Function that handles actions based on user key presses
- 1. if key == F12, toggle fullscreen
- 2. if key == p and game is not over, toggle pause
- 3. if game is in progress handle WASD action
- 4. if key == r and game is over reset it
- 
- Space logic:
- Let dir be the direction that corresponds to a key
- if current direction is not dir (Prevents key spamming to rapidly update the snake)
- and current_direction is not opposite of dir (Prevents the snake turning and eating itself)
- Update direction of snake and force a game update (see ofApp.h for why)
- */
+
 void ofApp::keyPressed(int key){
     if (key == OF_KEY_F12) {
         ofToggleFullscreen();
         return;
     }
     
-    int upper_key = toupper(key); // Standardize on upper case
+    int upper_key = toupper(key);
     
     if (upper_key == 'P' && game_state_ != FINISHED) {
         // Pause or unpause
@@ -73,14 +69,14 @@ void ofApp::keyPressed(int key){
             update();
         }
     }
-    else if (upper_key == 'R' && current_state_ == FINISHED) {
+    else if (upper_key == 'R' && game_state_ == FINISHED) {
         reset();
     }
 
 }
 
 void ofApp::keyReleased(int key){
-    int upper_key = toupper(key); // Standardize on upper case
+    int upper_key = toupper(key);
     if (upper_key == 'Z') {
         birdy_.setDirection(DOWN);
         update();
@@ -95,9 +91,49 @@ void ofApp::reset() {
 }
 
 
-//--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
     birdy_.resize(w, h);
     game_pillar_.resize(w, h);
 }
 
+
+void ofApp::drawBird() {
+    //ofImage bird_ = birdy_.getIcon();
+    ofVec2f bird_pos = birdy_.getBirdPos();
+    ofVec2f bird_size = birdy_.getBirdSize();
+    ofSetColor(250, 15, 123);
+    ofDrawRectangle(bird_pos, bird_size.x, bird_size.y);
+}
+
+void ofApp::drawPillar() {
+    ofRectangle pillar_ = game_pillar_.getRect();
+    ofVec2f rect_pos = game_pillar_.getPillarPos();
+    ofVec2f rect_size = game_pillar_.getPillarSize();
+    ofSetColor(0,240, 0);
+    ofDrawRectangle(rect_pos, rect_size.x, rect_size.y);
+}
+
+void ofApp::drawGameOver() {
+    string lose_message = "You Lost! Final Score: " + std::to_string(pillars_cleared_);
+    ofSetColor(0, 0, 0);
+    ofDrawBitmapString(lose_message, ofGetWindowWidth() / 2, ofGetWindowHeight() / 2);
+}
+
+void ofApp::drawGamePaused() {
+    string pause_message = "P to Unpause!";
+    ofSetColor(0, 0, 0);
+    ofDrawBitmapString(pause_message, ofGetWindowWidth() / 2, ofGetWindowHeight() / 2);
+}
+void ofApp::drawScore() {
+    std::sort(scores_.rbegin(), scores_.rend());
+    string message = "\n";
+    for (int i = 1; i <= scores_.size(); i++)
+        message += "#" + std::to_string(i) + "  ~~~~~~ " + std::to_string(scores_[i-1]) + "\n";
+    
+    if (scores_.size() < 10) {
+        for (int i = scores_.size() + 1; i <= 10; i++)
+            message += "#" + std::to_string(i) + "  ~~~~~~ " + "0\n";
+    }
+    ofSetColor(0, 0, 0);
+    ofDrawBitmapString(message, ofGetWindowWidth() / 2, ofGetWindowHeight() / 2);
+}
