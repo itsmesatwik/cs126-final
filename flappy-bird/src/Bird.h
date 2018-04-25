@@ -20,6 +20,8 @@ public:
 	Bird();
 	~Bird();
 	ofVec2f getBirdSize() const;
+    ofImage getIcon() const;
+    ofVec2f getBirdPos() const;
 	bool isDead(Pillar pillar) const;
 	void update();
 	void resize(int w, int h);
