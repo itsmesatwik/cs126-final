@@ -12,7 +12,7 @@
 * Added documentation for the code.
 * Debugging in progress
 
-### Problems Emcountered
+### Problems Encountered
 * Deciding on a project is hard, I wanna do something big but at the same time don't want to tank my grade.
 * Background gets messed up during play/pause. 
 * Pillars are not working for some reason I might change them to images.
