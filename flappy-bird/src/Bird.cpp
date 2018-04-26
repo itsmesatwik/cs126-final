@@ -1,14 +1,22 @@
 #include "Bird.h"
 const double Bird::size_ratio_ = 0.1;
 
+/*
+ * Default Constructor
+ * Sets the screen dimensions, bird position and bird size to the appropriate ratio
+ *
+ */
 Bird::Bird() {
 	int width = ofGetWindowWidth();
 	int height = ofGetWindowHeight();
 	screen_dim_.set(width, height);
 	double bird_height_ = size_ratio_*height;
 	bird_size_.set(bird_height_,bird_height_);
+    //setting current dir to DOWN by default because we want the bird to go down
 	current_direction_ = DOWN;
-	//bird_icon_.load("./default_bird_logo.png");
+    //load the bird image
+	bird_icon_.load("default_bird_logo.png");
+    //set the bird's position at the centre of the window
 	bird_pos_.set(width/2, height/2);
 }
 
@@ -17,7 +25,7 @@ Bird::~Bird() {}
 void Bird::update() {
 	switch (current_direction_) {
 		case UP:
-			bird_pos_.set(bird_pos_.x, bird_pos_.y - bird_size_.y);
+			bird_pos_.set(bird_pos_.x, bird_pos_.y - screen_dim_.y * size_ratio_);
 			break;
 		case DOWN:
 			bird_pos_.set(bird_pos_.x, bird_pos_.y + bird_size_.y);

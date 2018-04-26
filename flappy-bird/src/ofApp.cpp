@@ -98,17 +98,19 @@ void ofApp::windowResized(int w, int h){
 
 
 void ofApp::drawBird() {
-    //ofImage bird_ = birdy_.getIcon();
+    ofImage bird_ = birdy_.getIcon();
     ofVec2f bird_pos = birdy_.getBirdPos();
     ofVec2f bird_size = birdy_.getBirdSize();
+    ofFill();
     ofSetColor(250, 15, 123);
-    ofDrawRectangle(bird_pos, bird_size.x, bird_size.y);
+    bird_.draw(0,0);
 }
 
 void ofApp::drawPillar() {
     ofRectangle pillar_ = game_pillar_.getRect();
     ofVec2f rect_pos = game_pillar_.getPillarPos();
     ofVec2f rect_size = game_pillar_.getPillarSize();
+    ofFill();
     ofSetColor(0,240, 0);
     ofDrawRectangle(rect_pos, rect_size.x, rect_size.y);
 }
