@@ -1,6 +1,5 @@
 #include "Pillar.h"
-const double Pillar::size_ratio_ = 0.55;
-
+#include <cstdlib>
 /*
   Default Constructor
  */
@@ -8,9 +7,10 @@ Pillar::Pillar() {
     int width = ofGetWindowWidth();
     int height = ofGetWindowHeight();
     screen_dim_.set(width, height);
-    double pillar_height_ =  height * size_ratio_; // Taken from http://en.cppreference.com/w/cpp/numeric/random/rand
-    pillar_size_.set(width * 0.1, pillar_height_);
-    pillar_.set(pillar_pos_, pillar_size_.x, pillar_height_);
+    double pillar_height_ =  height * (0.15 + ((double)(rand()%1000000)/2000000)); // Taken from http://en.cppreference.com/w/cpp/numeric/random/rand
+    pillar_size_.set(100, pillar_height_);
+    pillar_pos_.set(1500, height - pillar_size_.y);
+    pillar_.load("pillar.png");
 }
 
 Pillar::~Pillar() {}
@@ -24,7 +24,7 @@ ofVec2f Pillar::getPillarPos() const {
 }
 
 void Pillar::update() {
-    pillar_pos_.set(pillar_pos_.x - (screen_dim_.x * size_ratio_), pillar_pos_.y);
+    pillar_pos_.set(pillar_pos_.x - 20, pillar_pos_.y);
 }
 
 void Pillar::resize(int w, int h) {
@@ -37,7 +37,7 @@ void Pillar::resize(int w, int h) {
     screen_dim_.set(w, h);
 }
 
-ofRectangle Pillar::getRect() const {
+ofImage Pillar::getRect() const {
     return pillar_;
 }
 
