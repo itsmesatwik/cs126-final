@@ -3,9 +3,8 @@
 
 class Pillar {
 private:
-    ofRectangle pillar_;
+    ofImage pillar_;
     ofVec2f screen_dim_;
-    static const double size_ratio_;
     ofVec2f pillar_size_;
     ofVec2f pillar_pos_;
     
@@ -16,5 +15,5 @@ public:
     ofVec2f getPillarPos() const;
     void update();
     void resize(int w, int h);
-    ofRectangle getRect() const;
+    ofImage getRect() const;
 };
