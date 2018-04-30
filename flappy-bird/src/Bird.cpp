@@ -17,7 +17,7 @@ Bird::Bird() {
     //load the bird image
 	bird_icon_.load("default_bird_logo.png");
     //set the bird's position at the centre of the window
-	bird_pos_.set(width/2, height/2);
+	bird_pos_.set(width/2 - 50, height/2);
 }
 
 Bird::~Bird() {}
@@ -25,10 +25,10 @@ Bird::~Bird() {}
 void Bird::update() {
 	switch (current_direction_) {
 		case UP:
-			bird_pos_.set(bird_pos_.x, bird_pos_.y - screen_dim_.y * size_ratio_);
+			bird_pos_.set(bird_pos_.x, bird_pos_.y - 30);
 			break;
 		case DOWN:
-			bird_pos_.set(bird_pos_.x, bird_pos_.y + bird_size_.y);
+			bird_pos_.set(bird_pos_.x, bird_pos_.y + 20);
 			break;
 	}
 }
@@ -45,10 +45,14 @@ ofVec2f Bird::getBirdSize() const {
 }
 
 bool Bird::isDead(Pillar screen_pillar_) const {
-	if (bird_pos_.x > screen_dim_.x)
+	if (bird_pos_.y > screen_dim_.y)
 		return true;
-    ofRectangle bird_rect_(bird_pos_.x, bird_pos_.y, bird_size_.x, bird_size_.y);
-	if (screen_pillar_.getRect().intersects(bird_rect_))
+    ofVec2f pillar_pos = screen_pillar_.getPillarPos();
+    ofVec2f pillar_size = screen_pillar_.getPillarSize();
+    ofRectangle pillar_rect1_(pillar_pos.x, pillar_pos.y, pillar_size.x, pillar_size.y);
+    ofRectangle pillar_rect2_ (pillar_pos.x, 0, pillar_size.x, ofGetHeight() - pillar_size.y - ofGetWindowHeight()*0.35);
+    ofRectangle bird_rect_(bird_pos_.x + 7, bird_pos_.y + 7, bird_size_.x - 10, bird_size_.y - 10);
+	if (pillar_rect1_.intersects(bird_rect_) || pillar_rect2_.intersects(bird_rect_))
         return true;
     return false;
 }
