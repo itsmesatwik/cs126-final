@@ -51,7 +51,7 @@ bool Bird::isDead(Pillar screen_pillar_) const {
     ofVec2f pillar_size = screen_pillar_.getPillarSize();
     ofRectangle pillar_rect1_(pillar_pos.x, pillar_pos.y, pillar_size.x, pillar_size.y);
     ofRectangle pillar_rect2_ (pillar_pos.x, 0, pillar_size.x, ofGetHeight() - pillar_size.y - ofGetWindowHeight()*0.35);
-    ofRectangle bird_rect_(bird_pos_.x + 7, bird_pos_.y + 7, bird_size_.x - 10, bird_size_.y - 10);
+    ofRectangle bird_rect_(bird_pos_.x + 5, bird_pos_.y + 5, bird_size_.x - 5, bird_size_.y - 5);
 	if (pillar_rect1_.intersects(bird_rect_) || pillar_rect2_.intersects(bird_rect_))
         return true;
     return false;
@@ -62,6 +62,10 @@ BirdDirection Bird::getDirection() const {
 }
 
 void Bird::setDirection(BirdDirection newDirection) {
+    if (newDirection == UP && !skinOn)
+        bird_icon_.load("bird_up.png");
+    if (newDirection == DOWN && !skinOn)
+        bird_icon_.load("default_bird_logo.png");
     current_direction_ = newDirection;
 }
 
@@ -72,4 +76,16 @@ void Bird::resize(int w, int h) {
     bird_size_.set(new_bird_, new_bird_);
     bird_pos_.set((bird_pos_.x/width)*w, (bird_pos_.y/height)*h);
     screen_dim_.set(w, h);
+}
+
+void Bird::setSkinOn(bool a) {
+    skinOn = a;
+}
+
+bool Bird::getSkinOn() {
+    return skinOn;
+}
+
+void Bird::setSkin(std::string skinPath) {
+    bird_icon_.load(skinPath);
 }

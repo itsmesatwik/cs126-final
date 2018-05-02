@@ -13,6 +13,7 @@ private:
 	BirdDirection current_direction_;
 	ofVec2f screen_dim_;
 	static const double size_ratio_;
+	bool skinOn = false;
 	ofVec2f bird_size_;
 	ofVec2f bird_pos_;
 
@@ -27,4 +28,7 @@ public:
 	void resize(int w, int h);
 	BirdDirection getDirection() const;
 	void setDirection(BirdDirection newDirection);
+	void setSkin(std::string skinPath);
+	void setSkinOn(bool a);
+	bool getSkinOn();
 };
