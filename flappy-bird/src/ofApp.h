@@ -8,6 +8,7 @@
 
 #include "ofMain.h"
 #include "ofApp.h"
+#include "ofxGui.h"
 
 #include "Bird.h"
 #include "Pillar.h"
@@ -30,6 +31,8 @@ private:
     int pillars_cleared_ = 0;
     int coins_collected_ = 0;
     int total_coins_ = 0;
+    ofxPanel gui_;
+    ofxFloatSlider sound_;
     GameState game_state_ = START;
     Bird birdy_;
     Pillar game_pillar_;

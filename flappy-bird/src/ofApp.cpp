@@ -19,12 +19,23 @@ void ofApp::setup() {
     fly_.load("fly.wav");
     coin_.load("coin.wav");
     pillar_clear_.load("pillar_clear.flac");
+    gui_.setup();
+    gui_.add(sound_.setup("Sound", 50, 0, 300));
     backsound_.play();
 }
 
 
 // Actual game function that executes the game
 void ofApp::update() {
+    
+    
+    trips_.setVolume(sound_);
+    fly_.setVolume(sound_);
+    die_.setVolume(sound_);
+    die2_.setVolume(sound_);
+    backsound_.setVolume(sound_);
+    coin_.setVolume(sound_);
+    pillar_clear_.setVolume(sound_);
     // if playing the game
     if (game_state_ == RUNNING) {
         //checks if the bird is dead or not if true changes the game state, pushes scores and coins and plays dying sounds
@@ -152,9 +163,11 @@ void ofApp::update() {
  3. Draw the current position of the food and of the snake
  */
 
-void ofApp::draw(){
+void ofApp::draw() {
+    
     if (game_state_ == START) {
         drawGameStart();
+        gui_.draw();
         return;
     }
     if (game_state_ == SHOP) {
