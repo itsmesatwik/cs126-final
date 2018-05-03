@@ -1,6 +1,9 @@
 #include "ofApp.h"
 #include <iostream>
 
+
+const int rangeset_ = 10;
+// function for setting up the sounds and images in the game
 void ofApp::setup() {
     ofSetWindowTitle("Flappy Bird");
     srand(static_cast<unsigned>(time(0)));
@@ -20,64 +23,79 @@ void ofApp::setup() {
 }
 
 
+// Actual game function that executes the game
 void ofApp::update() {
+    // if playing the game
     if (game_state_ == RUNNING) {
+        //checks if the bird is dead or not if true changes the game state, pushes scores and coins and plays dying sounds
         if (birdy_.isDead(game_pillar_)) {
             die2_.play();
-            //die_.play();
+            die_.play();
             game_state_ = FINISHED;
             scores_.push_back(pillars_cleared_ + coins_collected_);
             total_coins_ += coins_collected_;
             return;
         }
+        // update all the game objects
         birdy_.update();
         game_pillar_.update();
         coin1_.update();
         coin2_.update();
         coin3_.update();
-        
-        // Checking if the bird has passed the pillar
+
+
         
         ofVec2f pillar_pos = game_pillar_.getPillarPos();
         int pillar_x = pillar_pos.x;
-        
-        if (pillar_x <= -5) {
-            game_pillar_ = Pillar();
-        }
         ofVec2f coin1_cor = coin1_.getCoinPos();
         ofVec2f coin2_cor = coin2_.getCoinPos();
         ofVec2f coin3_cor = coin3_.getCoinPos();
-        
-        if (coin1_cor.x <= 10)
-            coin1_ = Coin();
-        
-        if (coin2_cor.x <= 10)
-            coin2_ = Coin();
-        
-        if (coin3_cor.x <= 10)
-            coin3_ = Coin();
-        
         ofVec2f bird_pos = birdy_.getBirdPos();
         ofVec2f bird_s = birdy_.getBirdSize();
         double bird_size_ = bird_s.x;
+        
 
-        // Play "Oh baby a triple"
-        if (bird_pos.x  >= pillar_x +100 && bird_pos.x <= pillar_x + 120) {
+        // reseting the game pillar once it hits the left wall
+        if (pillar_x <= -5) {
+            game_pillar_ = Pillar();
+        }
+
+
+        // reseting the coins when they hit the left wall
+        if (coin1_cor.x <= rangeset_)
+            coin1_ = Coin();
+        
+        if (coin2_cor.x <= rangeset_)
+            coin2_ = Coin();
+        
+        if (coin3_cor.x <= rangeset_)
+            coin3_ = Coin();
+
+
+
+        // Checking if bird cleared the pillar and Play "Oh baby a triple" if the 3rd pillar gets cleared.
+        if (bird_pos.x  >= pillar_x +(rangeset_*rangeset_) && bird_pos.x <= pillar_x + (rangeset_*rangeset_) + rangeset_*2) {
             pillars_cleared_++;
             pillar_clear_.play();
             if (pillars_cleared_ == 3)
                 trips_.play();
         }
 
-        ofRectangle bird_box(bird_pos.x + 7, bird_pos.y + 7, bird_size_, bird_size_);
-        ofRectangle coin1_pos(coin1_cor, coin1_.getCoinSize() - 10, coin1_.getCoinSize() - 10);
-        ofRectangle coin2_pos(coin2_cor, coin1_.getCoinSize() - 10, coin1_.getCoinSize() - 10);
-        ofRectangle coin3_pos(coin3_cor, coin1_.getCoinSize() - 10, coin1_.getCoinSize() - 10);
-        
+
+
         ofVec2f pillar_size = game_pillar_.getPillarSize();
+        ofRectangle bird_box(bird_pos.x + 7, bird_pos.y + 7, bird_size_, bird_size_);
+        ofRectangle coin1_pos(coin1_cor, coin1_.getCoinSize() - rangeset_, coin1_.getCoinSize() - rangeset_);
+        ofRectangle coin2_pos(coin2_cor, coin1_.getCoinSize() - rangeset_, coin1_.getCoinSize() - rangeset_);
+        ofRectangle coin3_pos(coin3_cor, coin1_.getCoinSize() - rangeset_, coin1_.getCoinSize() - rangeset_);
         ofRectangle pillar_rect1_(pillar_pos.x, pillar_pos.y, pillar_size.x, pillar_size.y);
-        ofRectangle pillar_rect2_ (pillar_pos.x, 0, pillar_size.x, ofGetHeight() - pillar_size.y - 200);
-        
+        ofRectangle pillar_rect2_ (pillar_pos.x, 0, pillar_size.x, ofGetHeight() - pillar_size.y - (2*rangeset_*rangeset_));
+
+
+
+
+
+        // Checking if coins spawned on previous objects        
         if(coin1_pos.intersects(pillar_rect1_) || coin1_pos.intersects(pillar_rect2_))
             for (int i = 0; i < 3; i++)
                 coin1_.update();
@@ -87,7 +105,6 @@ void ofApp::update() {
         if(coin3_pos.intersects(pillar_rect1_) || coin3_pos.intersects(pillar_rect2_))
             for (int i = 0; i < 3; i++)
                 coin3_.update();
-        
         
         if (coin1_pos.intersects(coin2_pos))
             for (int i = 0; i < 3; i++)
@@ -99,7 +116,10 @@ void ofApp::update() {
         if (coin2_pos.intersects(coin3_pos))
             for (int i = 0; i < 3; i++)
                 coin3_.update();
-        
+
+
+
+        // Checking if bird collected the coins
         if (coin1_pos.intersects(bird_box)) {
             coin1_.setTaken(true);
             coin1_.coinTaken();
@@ -172,6 +192,7 @@ void ofApp::draw(){
 }
 
 
+// Setting up what each key press means in a certain game mode
 void ofApp::keyPressed(int key){
     int upper_key = toupper(key);
 
@@ -205,19 +226,19 @@ void ofApp::keyPressed(int key){
             return;
         }
         if (upper_key == 'A') {
-            if (total_coins_ >= 35) {
+            if (total_coins_ >= 35 && inventory_.size() == 0) {
                 inventory_.push_back("blu_.png");
             }
             return;
         }
-        else if (upper_key == 'B') {
+        else if (upper_key == 'B'&& inventory_.size() == 1) {
             if (total_coins_ >= 70) {
                 inventory_.push_back("chic_.png");
             }
             return;
         }
         else if (upper_key == 'C') {
-            if (total_coins_ >= 150) {
+            if (total_coins_ >= 150 && inventory_.size() == 2) {
                 inventory_.push_back("super_bird.png");
             }
             return;
@@ -262,6 +283,8 @@ void ofApp::keyPressed(int key){
 
 }
 
+
+// set up so that when key z is released the bird starts coming down
 void ofApp::keyReleased(int key){
     int upper_key = toupper(key);
     if (upper_key == 'Z') {
@@ -270,8 +293,9 @@ void ofApp::keyReleased(int key){
     }
 }
 
-void ofApp::reset() {
 
+// Reseting all the game objects
+void ofApp::reset() {
     birdy_ = Bird();
     game_pillar_ = Pillar();
     coin1_ = Coin();
@@ -298,6 +322,7 @@ void ofApp::drawGameStart() {
     game_font_.drawString(message, ofGetWindowWidth()*0.05, ofGetWindowHeight()*0.35);
 }
 
+// Draws bird, draws up image if birddir is up else draws normal image, if skin is on always draws normal image
 void ofApp::drawBird() {
     ofImage bird_ = birdy_.getIcon();
     ofVec2f bird_pos = birdy_.getBirdPos();
@@ -309,6 +334,8 @@ void ofApp::drawBird() {
         bird_.draw(bird_pos.x,bird_pos.y,bird_size.x,bird_size.y);
 }
 
+
+// Draws pillars of random height
 void ofApp::drawPillar() {
     ofImage pillar_ = game_pillar_.getRect();
     ofImage pillar2_ = game_pillar_.getRect();
@@ -319,6 +346,7 @@ void ofApp::drawPillar() {
     pillar2_.draw(rect_pos.x, 0, rect_size.x, ofGetHeight() - rect_size.y - ofGetWindowHeight()*0.35);
 }
 
+// Draws high score and final score 
 void ofApp::drawGameOver() {
     backsound_.stop();
     gameOver_.draw(ofGetWindowWidth()/2 - 400, ofGetWindowHeight()/2 - 200, 800, 600);
@@ -326,6 +354,7 @@ void ofApp::drawGameOver() {
     game_font_.drawString(lose_message, ofGetWindowWidth() / 2 - 300, ofGetWindowHeight() / 2);
 }
 
+//Draws coins at random locations
 void ofApp::drawCoin(Coin coin) {
     ofImage coin_ = coin.getCoinImg();
     ofVec2f coin_pos = coin.getCoinPos();
