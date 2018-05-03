@@ -374,6 +374,7 @@ void ofApp::drawScore() {
     game_font_.drawString(message, ofGetWindowWidth() / 2 - 300, ofGetWindowHeight() / 2 - 150);
 }
 
+// Draws the shop with the skins available
 void ofApp::drawShop() {
     background_.draw(0,0, ofGetWindowWidth()+20, ofGetWindowHeight()+20);
     string message = "SHOP";
@@ -394,6 +395,7 @@ void ofApp::drawShop() {
     game_font_.drawString("\n150\n\nC",ofGetWindowWidth() / 2 + ofGetWindowWidth()*0.31, ofGetWindowHeight() / 2 + ofGetWindowHeight()*0.28);
 }
 
+// Draws the skins available that have been unlocked.
 void ofApp::drawInventory() {
     background_.draw(0,0, ofGetWindowWidth()+20, ofGetWindowHeight()+20);
     string message = "INVENTORY";

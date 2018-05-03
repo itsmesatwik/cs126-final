@@ -62,8 +62,10 @@ BirdDirection Bird::getDirection() const {
 }
 
 void Bird::setDirection(BirdDirection newDirection) {
+    // loads the flying up img of the bird if no skin is on
     if (newDirection == UP && !skinOn)
         bird_icon_.load("bird_up.png");
+    //loads the normal down img of the bird
     if (newDirection == DOWN && !skinOn)
         bird_icon_.load("default_bird_logo.png");
     current_direction_ = newDirection;

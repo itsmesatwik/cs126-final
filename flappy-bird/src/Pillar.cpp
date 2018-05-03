@@ -2,6 +2,7 @@
 #include <cstdlib>
 /*
   Default Constructor
+  Randomly sets the height of the pillar
  */
 Pillar::Pillar() {
     int width = ofGetWindowWidth();
