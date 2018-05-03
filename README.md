@@ -1,6 +1,7 @@
 # CS 126 FinalProject
 
 # Flappy Bird
+![Flappy bird image] (http://static6.businessinsider.com/image/52f8dd356da8112c32d72efa-960/348906-7-tips-for-high-scores-on-flappy-bird.jpg)
 ## How to Play
 * Press 'Z' to flap
 * Press 'S' for shop
